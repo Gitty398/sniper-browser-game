@@ -35,19 +35,27 @@
 
     <div id="user-interface">
 
-        <div>
+        <div class="display-tile">
             <h3 class="card-title">Range Card</h3>
         </div>
 
-        <div>
+        <div class="display-tile">
             <h3 class="card-title">Wind Reference for 500m</h3>
         </div>
 
-        <div>
+        <div class="display-tile">
             <h3 class="card-title">Shooting Position</h3>
         </div>
 
-        <div>
+        <div class="display-tile">
+            <h3 class="card-title">Action Buttons</h3>
+        </div>
+
+        <div class="display-tile">
+            <h3 class="card-title">Remaining Ammo</h3>
+        </div>
+
+        <div class="display-tile">
             <h3 class="card-title">DOPE</h3>
         </div>
 
@@ -57,7 +65,7 @@
             <li> 400m</li>
             <li>+10 Elevation</li>
             <li> 700m</li>
-            <li>+10 Elevation</li>
+            <li>0 Elevation</li>
             <li> 1000m</li>
             <li>-10 Elevation</li>
         </ul>
@@ -68,17 +76,28 @@
             <li> 10 mph</li>
             <li>1 mil</li>
             <li> 15 mph</li>
-            <li>2 mils</li>
+            <li>1.5 mils</li>
             <li> 20 mph</li>
-            <li>3 mils</li>
+            <li>2 mils</li>
         </ul>
 
-        <div>
+        <div class="display-tile">
             <img id="army-man" src="./ArmyMan.png" alt="green army man as seen from above">
         </div>
 
-        <ul id="dope">
 
+        <div class="display-tile" id="shooter-inputs">
+            <p>Elevation</p>
+            <input type="text" id="elevation">
+            <p>Windage Direction</p>
+            <input type="text" id="windage-dir">
+            <p>Windage (Mils)</p>
+            <input type="text" id="windage-num">
+            <p>FIRE!!</p>
+            <button id="fire-btn"></button>
+        </div>
+
+        <ul class="display-tile" id="dope">
         </ul>
 
 
