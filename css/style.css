@@ -128,5 +128,10 @@ p {
 #fire-btn {
     width: 120px;
     height: 30px;
-    background-color: red;
+    background-color: rgb(244, 72, 72);
+}
+
+#ammo-container {
+    display: flex;
+    justify-content: center;
 }

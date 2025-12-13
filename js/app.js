@@ -18,19 +18,27 @@ class Target {
 
 const targetOne = new Target(100, 5, "S", .10);
 
-console.log(targetOne)
+// console.log(targetOne)
 
 // caching browser elements
 
 const hitMissBtnEl = document.querySelector("#hit-miss-button");
 
-const tgtButtonEl = document.querySelector("#tgt-buttons");
+const tgtDistanceEl = document.querySelector("#tgt-distance");
+const tgtWndSpdEl = document.querySelector("#wnd-spd");
+const tgtWndDirEl = document.querySelector("#wnd-dir");
 
-const shooterInputsEl = document.querySelectorAll("#shooter-inputs");
+
+const shooterElevationEl = document.querySelector("#elevation");
+const shooterDirectionEl = document.querySelector("#direction");
+const shooterMilWindageEl = document.querySelector("#mil-windage");
 
 const fireBtnEl = document.querySelector("#fire-btn");
 
-console.log(tgtButtonEl)
+const ammoContainerEl = document.querySelector("#ammo-container")
+const dopeContainerEl = document.querySelector("#dope-container")
+
+// console.log(fireBtnEl)
 
 // event listeners
 
@@ -38,4 +46,8 @@ fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
 });
 
+// functions
 
+function renderTgtDist() {
+
+}
