@@ -21,11 +21,11 @@ class Target {
     }
 };
 
-const targetOne = new Target(100, 5, "S", .10);
-const targetTwo = new Target(150, 5, "S", .10);
-const targetThree = new Target(200, 5, "S", .10);
-const targetFour = new Target(300, 5, "S", .10);
-const targetFive = new Target(350, 5, "S", .10);
+const targetOne = new Target(100, 5, "S", .12);
+const targetTwo = new Target(150, 5, "S", .12);
+const targetThree = new Target(200, 5, "S", .12);
+const targetFour = new Target(300, 5, "S", .12);
+const targetFive = new Target(350, 5, "S", .12);
 const targetSix = new Target(450, 5, "S", .10);
 const targetSeven = new Target(700, 5, "S", .10);
 const targetEight = new Target(750, 5, "S", .10);
@@ -59,32 +59,35 @@ const fireBtnEl = document.querySelector("#fire-btn");
 const ammoContainerEl = document.querySelector("#ammo-container")
 const dopeContainerEl = document.querySelector("#dope-container")
 
-// console.log(fireBtnEl)
+
+
 
 function calculateHitElevation(target) {
     const tgtDistance = target.distance;
     let shooterElevation = Number(shooterElevationEl.value);
 
     if (tgtDistance >= 100 && tgtDistance <= 400) {
-        return shooterElevation * 33 + 100
+        return shooterElevation * 15 + 100
     }
 
     if (tgtDistance >= 401 && tgtDistance <= 700) {
-        return shooterElevation * 33 + 100
+        return shooterElevation * 15 + 100
     }
 
     if (tgtDistance >= 701 && tgtDistance <= 1000) {
-        return shooterElevation * 33 + 100
+        return shooterElevation * 15 + 100
     }
 
+    console.log(shooterElevation)
     return shooterElevation
-};
 
-console.log(shooterElevationEl.value);
+};
 
 function renderHit(target) {
     const hitElevation = calculateHitElevation(target);
     const tgtDistance = target.distance;
+
+    console.log(hitElevation)
 
     const tolerance = tgtDistance * target.tolerance;
 
@@ -102,14 +105,22 @@ function renderHit(target) {
 fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
 
-    const target = targetSelector();
+    const target = peekTarget();
     if (!target) {
         console.log("No more targets");
         return;
     }
     console.log("target distance", target.distance)
-    renderHit(target)
-    renderTgtDist(target)
+    renderHit(target);
+
+    currentTargetIndex++;
+
+    const nextTarget = peekTarget();
+    if (nextTarget) {
+        renderTgtDist(nextTarget);
+    } else {
+        console.log("All targets completed")
+    }
 });
 
 // functions
@@ -132,9 +143,13 @@ function renderTgtDist(target) {
     tgtWndSpdEl.textContent = target.windSpeed
 }
 
+function peekTarget() {
+    return targetDeck[currentTargetIndex] ?? null;
+}
 
-const target = targetSelector();
-if (target) renderTgtDist(target);
+const firstTarget = peekTarget();
+if (firstTarget) renderTgtDist(firstTarget);
+
 
 
 // targetSelector()
