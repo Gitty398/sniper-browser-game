@@ -12,12 +12,12 @@ let currentTargetIndex = 0
 // creating the objects for targets
 
 class Target {
-    constructor(distance, windSpeed, windDir, tolerance) {
+    constructor(distance, windSpeed, windDir, tolerance, hit) {
         this.distance = distance;
         this.windSpeed = windSpeed;
         this.windDir = windDir;
         this.tolerance = tolerance;
-        this.shotAt = false;
+        this.hit = false;
     }
 };
 
@@ -91,13 +91,15 @@ function renderHit(target) {
 
     const tolerance = tgtDistance * target.tolerance;
 
-    if (hitElevation >= tgtDistance - tolerance && hitElevation <= tgtDistance + tolerance)
-        console.log("Hit")
+    const isHit = hitElevation >= tgtDistance - tolerance &&
+        hitElevation <= tgtDistance + tolerance
 
-    else {
-        console.log("Miss")
-    }
-};
+    target.hit = isHit;
+    target.shotAt = true;
+
+    console.log(isHit ? "Hit" : "Miss")
+    return isHit;
+}
 
 
 // event listeners
@@ -105,26 +107,43 @@ function renderHit(target) {
 fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
 
-    const target = peekTarget();
-    if (!target) {
-        console.log("No more targets");
-        return;
-    }
-    console.log("target distance", target.distance)
-    renderHit(target);
+    if (ammoRemaining >= 1) {
 
-    currentTargetIndex++;
+        const target = peekTarget();
+        if (!target) {
+            console.log("No more targets");
+            return;
+        }
+        renderHit(target);
+        ammoRemaining--;
+        renderAmmo()
 
-    const nextTarget = peekTarget();
-    if (nextTarget) {
-        renderTgtDist(nextTarget);
+        if (target.hit === true) {
+            currentTargetIndex++;
+
+            const nextTarget = peekTarget();
+            if (nextTarget) {
+                renderTgtInfo(nextTarget);
+            } else {
+                console.log("All targets completed")
+            }
+        }
     } else {
-        console.log("All targets completed")
+        console.log("Out of ammo")
     }
 });
 
+
 // functions
 
+
+function renderAmmo() {
+    ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
+}
+
+function updateDope() {
+
+}
 
 function targetSelector() {
     if (currentTargetIndex >= targetDeck.length) {
@@ -135,9 +154,7 @@ function targetSelector() {
     return currentTarget;
 }
 
-console.log(currentTarget)
-
-function renderTgtDist(target) {
+function renderTgtInfo(target) {
     tgtDistanceEl.textContent = target.distance
     tgtWndDirEl.textContent = target.windDir
     tgtWndSpdEl.textContent = target.windSpeed
@@ -148,18 +165,4 @@ function peekTarget() {
 }
 
 const firstTarget = peekTarget();
-if (firstTarget) renderTgtDist(firstTarget);
-
-
-
-// targetSelector()
-// renderTgtDist()
-
-
-// function cleanTarget() {
-//     tgtDistanceEl.innerHTML = ""
-// }
-
-// function currentTarget() {
-//     targetOne[0] = 
-// }
+if (firstTarget) renderTgtInfo(firstTarget);
