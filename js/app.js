@@ -107,29 +107,33 @@ function renderHit(target) {
 fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
 
-    if (ammoRemaining >= 1) {
+    if (ammoRemaining < 1) {
+        console.log("out of Ammo")
+        return;
+    }
 
-        const target = peekTarget();
-        if (!target) {
-            console.log("No more targets");
-            return;
+    const target = peekTarget();
+    if (!target) {
+        console.log("No more targets");
+        return;
+    }
+
+    const hitElevation = calculateHitElevation(target);
+    const isHit = renderHit(target);
+
+    ammoRemaining--;
+    renderAmmo()
+    updateDope(target, isHit, hitElevation)
+
+    if (isHit) {
+        currentTargetIndex++;
+
+        const nextTarget = peekTarget();
+        if (nextTarget) {
+            renderTgtInfo(nextTarget);
+        } else {
+            console.log("All targets completed")
         }
-        renderHit(target);
-        ammoRemaining--;
-        renderAmmo()
-
-        if (target.hit === true) {
-            currentTargetIndex++;
-
-            const nextTarget = peekTarget();
-            if (nextTarget) {
-                renderTgtInfo(nextTarget);
-            } else {
-                console.log("All targets completed")
-            }
-        }
-    } else {
-        console.log("Out of ammo")
     }
 });
 
@@ -141,8 +145,11 @@ function renderAmmo() {
     ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
 }
 
-function updateDope() {
-
+function updateDope(currentTarget, isHit, hitElevation) {
+    const li = document.createElement("li");
+    li.textContent = isHit
+        ? `Hit, ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)} off-center` : `Miss by ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)}m`;
+    dopeContainerEl.appendChild(li);
 }
 
 function targetSelector() {

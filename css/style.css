@@ -136,3 +136,24 @@ p {
     display: flex;
     justify-content: center;
 }
+
+#dope {
+    display: flex;
+    align-items: flex start;
+    justify-content: start;
+    padding: 0;
+    margin: 0;
+}
+
+#dope-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 145px;
+    flex-wrap: wrap;
+
+}
+
+#dope-container li {
+    flex: 0 0 auto;
+}
