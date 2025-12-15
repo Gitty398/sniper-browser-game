@@ -58,6 +58,7 @@ h3 {
 #tgt-buttons button {
     height: 30px;
     width: 120px;
+    color: black;
 }
 
 #user-interface {
