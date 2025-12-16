@@ -104,25 +104,42 @@ function renderHit(target) {
     if (target.hit === true) {
         setTimeout(() => {
             sound.play();
+            sound.volume = 0.2
         }, target.delay);
     }
     return isHit;
 }
 
 
-// event listeners
+function playShotSound() {
+    const sound = new Audio("./sniper-rifle-5989.mp3");
+    sound.play()
+    sound.volume = 0.2;
+}
+
+function peekTarget() {
+    return targetDeck[currentTargetIndex] ?? null;
+}
+
+function renderAmmo() {
+    ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
+}
+
+// -------------------------------event listeners----------------------------------------------------
+
+
 
 fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
 
     if (ammoRemaining <= 1) {
         console.log("out of Ammo")
+        playShotSound();
         renderScore();
         return;
     }
 
-    const sound = new Audio("./sniper-rifle-5989.mp3");
-    sound.play()
+    playShotSound()
 
     const target = peekTarget();
     if (!target) {
@@ -158,10 +175,6 @@ fireBtnEl.addEventListener("click", () => {
 // functions
 
 
-function renderAmmo() {
-    ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
-}
-
 function updateDope(currentTarget, isHit, hitElevation) {
     const li = document.createElement("li");
     li.textContent = isHit
@@ -182,10 +195,6 @@ function renderTgtInfo(target) {
     tgtDistanceEl.textContent = target.distance
     tgtWndDirEl.textContent = target.windDir
     tgtWndSpdEl.textContent = target.windSpeed
-}
-
-function peekTarget() {
-    return targetDeck[currentTargetIndex] ?? null;
 }
 
 const firstTarget = peekTarget();
