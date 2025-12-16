@@ -213,6 +213,7 @@ function peekTarget() {
 
 function renderAmmo() {
     ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
+    fireBtnEl.disabled = ammoRemaining === 0;
 }
 
 // -------------------------------event listeners----------------------------------------------------
@@ -279,7 +280,8 @@ fireBtnEl.addEventListener("click", () => {
 function updateDope(currentTarget, isHit, hitElevation) {
     const li = document.createElement("li");
     li.textContent = isHit
-        ? `Hit, ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)} off-center` : `Miss by ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)}m`;
+        ? `Hit, ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)} off-center` :
+        `Miss by ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)}m`;
     dopeContainerEl.appendChild(li);
 }
 
