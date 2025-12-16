@@ -19,11 +19,13 @@
     align-items: center;
 }
 
-#hit-miss-button {
+#win-lose {
     visibility: hidden;
     height: 75px;
     width: 200px;
-
+    color: black;
+    background-color: red;
+    text-size-adjust: inherit;
 }
 
 

@@ -12,25 +12,26 @@ let currentTargetIndex = 0
 // creating the objects for targets
 
 class Target {
-    constructor(distance, windSpeed, windDir, tolerance, hit) {
+    constructor(distance, windSpeed, windDir, tolerance, delay) {
         this.distance = distance;
         this.windSpeed = windSpeed;
         this.windDir = windDir;
         this.tolerance = tolerance;
-        this.hit = false;
+        // this.hit = false;
+        this.delay = delay;
     }
 };
 
-const targetOne = new Target(100, 5, "S", .12);
-const targetTwo = new Target(150, 5, "S", .12);
-const targetThree = new Target(200, 5, "S", .12);
-const targetFour = new Target(300, 5, "S", .12);
-const targetFive = new Target(350, 5, "S", .12);
-const targetSix = new Target(450, 5, "S", .10);
-const targetSeven = new Target(700, 5, "S", .10);
-const targetEight = new Target(750, 5, "S", .10);
-const targetNine = new Target(900, 5, "S", .10);
-const targetTen = new Target(1000, 5, "S", .10);
+const targetOne = new Target(100, 5, "S", .12, 500);
+const targetTwo = new Target(150, 5, "S", .12, 500);
+const targetThree = new Target(200, 5, "S", .12, 550);
+const targetFour = new Target(300, 5, "S", .12, 600);
+const targetFive = new Target(350, 5, "S", .12, 650);
+const targetSix = new Target(450, 5, "S", .10, 900);
+const targetSeven = new Target(700, 5, "S", .10, 2000);
+const targetEight = new Target(750, 5, "S", .10, 2100);
+const targetNine = new Target(900, 5, "S", .10, 3000);
+const targetTen = new Target(1000, 5, "S", .10, 4000);
 
 const targetDeck = [
     targetOne, targetTwo, targetThree, targetFour,
@@ -43,7 +44,7 @@ const targetDeck = [
 
 // caching browser elements
 
-const hitMissBtnEl = document.querySelector("#hit-miss-button");
+const winLoseBtnEl = document.querySelector("#win-lose");
 
 const tgtDistanceEl = document.querySelector("#tgt-distance");
 const tgtWndSpdEl = document.querySelector("#wnd-spd");
@@ -98,6 +99,13 @@ function renderHit(target) {
     target.shotAt = true;
 
     console.log(isHit ? "Hit" : "Miss")
+
+    const sound = new Audio("./steelcup-47888.mp3")
+    if (target.hit === true) {
+        setTimeout(() => {
+            sound.play();
+        }, target.delay);
+    }
     return isHit;
 }
 
@@ -107,10 +115,14 @@ function renderHit(target) {
 fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
 
-    if (ammoRemaining < 1) {
+    if (ammoRemaining <= 1) {
         console.log("out of Ammo")
+        renderScore();
         return;
     }
+
+    const sound = new Audio("./sniper-rifle-5989.mp3");
+    sound.play()
 
     const target = peekTarget();
     if (!target) {
@@ -133,8 +145,13 @@ fireBtnEl.addEventListener("click", () => {
             renderTgtInfo(nextTarget);
         } else {
             console.log("All targets completed")
+            winLoseBtnEl.style.visibility = "visible"
+            winLoseBtnEl.textContent = "You Win!"
+            ammoRemaining = 0;
+            return;
         }
     }
+
 });
 
 
@@ -173,3 +190,20 @@ function peekTarget() {
 
 const firstTarget = peekTarget();
 if (firstTarget) renderTgtInfo(firstTarget);
+
+
+function renderScore() {
+    currentTarget = targetDeck[currentTargetIndex]
+
+    if (currentTarget.distance >= 750) {
+        winLoseBtnEl.style.visibility = "visible"
+        winLoseBtnEl.textContent = "You Win!"
+        return;
+    }
+
+    if (currentTarget.distance < 750) {
+        winLoseBtnEl.style.visibility = "visible"
+        winLoseBtnEl.textContent = "You Lose!"
+        return;
+    }
+}
