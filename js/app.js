@@ -8,6 +8,14 @@ let targetsRemaining;
 let currentTarget = null;
 let currentTargetIndex = 0
 
+let spd;
+let correctTargetWindage;
+
+let correctWindDir;
+
+let shooterWindageMils;
+
+
 
 // creating the objects for targets
 
@@ -22,16 +30,16 @@ class Target {
     }
 };
 
-const targetOne = new Target(100, 5, "S", .12, 500);
-const targetTwo = new Target(150, 5, "S", .12, 500);
-const targetThree = new Target(200, 5, "S", .12, 550);
-const targetFour = new Target(300, 5, "S", .12, 600);
-const targetFive = new Target(350, 5, "S", .12, 650);
-const targetSix = new Target(450, 5, "S", .10, 900);
-const targetSeven = new Target(700, 5, "S", .10, 2000);
-const targetEight = new Target(750, 5, "S", .10, 2100);
-const targetNine = new Target(900, 5, "S", .10, 3000);
-const targetTen = new Target(1000, 5, "S", .10, 4000);
+const targetOne = new Target(100, 5, "E", .12, 500);
+const targetTwo = new Target(150, 10, "W", .12, 500);
+const targetThree = new Target(200, 15, "E", .12, 550);
+const targetFour = new Target(300, 20, "N", .12, 600);
+const targetFive = new Target(350, 10, "W", .12, 650);
+const targetSix = new Target(450, 5, "W", .10, 900);
+const targetSeven = new Target(700, 15, "E", .10, 2000);
+const targetEight = new Target(750, 20, "N", .10, 2100);
+const targetNine = new Target(900, 20, "E", .10, 3000);
+const targetTen = new Target(1000, 10, "W", .10, 4000);
 
 const targetDeck = [
     targetOne, targetTwo, targetThree, targetFour,
@@ -84,46 +92,97 @@ function calculateHitElevation(target) {
 
 };
 
-function calculateWindage(target) {
-    let correctWindDir;
+function calculateWindageDir() {
 
-    if (target.windDir === "S" ||
-        target.windDir === "N") {
+    if (currentTarget.windDir === "S" ||
+        currentTarget.windDir === "N") {
         correctWindDir = "center"
 
-    } else if (target.windDir === "NE" ||
-        target.windDir === "E" ||
-        target.windDir === "SE") {
+    } else if (currentTarget.windDir === "NE" ||
+        currentTarget.windDir === "E" ||
+        currentTarget.windDir === "SE") {
         correctWindDir = "right"
 
-    } else if (target.windDir === "NW" ||
-        target.windDir === "W" ||
-        target.windDir === "SW") {
+    } else if (currentTarget.windDir === "NW" ||
+        currentTarget.windDir === "W" ||
+        currentTarget.windDir === "SW") {
         correctWindDir = "left"
     } else {
         return null;
     }
-
     return correctWindDir;
 }
 
-function calculateWindageMils() {
-    let correctWindage = Number(shooterMilWindageEl.textContent);
-    return correctWindage * 5
+
+function calculateCorrectWindage() {
+    spd = currentTarget.windSpeed
+    console.log(spd)
+    console.log(correctWindDir)
+    if (correctWindDir === "center") {
+        correctTargetWindage = spd * 0
+
+    } else if (correctWindDir === "right") {
+        correctTargetWindage = spd * 5
+
+    } else if (correctWindDir === "left") {
+        correctTargetWindage = spd * -5
+
+    } else {
+        return null;
+    }
 }
+
+
+function calculateShooterWindage() {
+    shooterWindageMils = Number(shooterMilWindageEl.value);
+
+    if (correctWindDir === "center") {
+        return shooterWindageMils * 0
+
+    } else if (correctWindDir === "right") {
+        return shooterWindageMils * 10 * 5
+
+    } else if (correctWindDir === "left") {
+        return shooterWindageMils * 10 * -5
+
+    } else {
+        return null;
+    }
+}
+
+function checkWindage() {
+    calculateWindageDir();
+    calculateCorrectWindage();
+    calculateShooterWindage();
+    console.log(correctTargetWindage);
+    console.log(calculateShooterWindage());
+
+    if (correctTargetWindage === calculateShooterWindage()) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+
+// function checkCorrectWindage(correctWindageDir, shooterWindage) {
+//     let correctTotalWindage = target.correctWindDir
+// }
 
 
 
 function renderHit(target) {
     const hitElevation = calculateHitElevation(target);
     const tgtDistance = target.distance;
+    const windage = checkWindage(correctTargetWindage, shooterWindageMils)
+    console.log(windage)
 
     console.log(hitElevation)
 
     const tolerance = tgtDistance * target.tolerance;
 
     const isHit = hitElevation >= tgtDistance - tolerance &&
-        hitElevation <= tgtDistance + tolerance
+        hitElevation <= tgtDistance + tolerance && windage;
 
     target.hit = isHit;
     target.shotAt = true;
@@ -148,6 +207,7 @@ function playShotSound() {
 }
 
 function peekTarget() {
+    currentTarget = targetDeck[currentTargetIndex]
     return targetDeck[currentTargetIndex] ?? null;
 }
 
@@ -161,17 +221,23 @@ function renderAmmo() {
 
 fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
+    const target = peekTarget();
 
     if (ammoRemaining <= 1) {
         console.log("out of Ammo")
         playShotSound();
-        renderScore();
+        ammoRemaining--;
+        renderAmmo()
+        setTimeout(() => {
+            renderScore();
+        }, (target.delay + 500));
+
         return;
     }
 
     playShotSound()
 
-    const target = peekTarget();
+
     if (!target) {
         console.log("No more targets");
         winLoseBtnEl.style.visibility = "visible"
@@ -194,7 +260,13 @@ fireBtnEl.addEventListener("click", () => {
             renderTgtInfo(nextTarget);
         } else {
             console.log("All targets completed")
+            // renderScore()
+            updateDope(target, isHit, hitElevation)
             ammoRemaining = 0;
+            setTimeout(() => {
+                winLoseBtnEl.style.visibility = "visible"
+                winLoseBtnEl.textContent = "You Win!"
+            }, (target.delay + 500));
             return;
         }
     }
