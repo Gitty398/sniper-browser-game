@@ -84,6 +84,36 @@ function calculateHitElevation(target) {
 
 };
 
+function calculateWindage(target) {
+    let correctWindDir;
+
+    if (target.windDir === "S" ||
+        target.windDir === "N") {
+        correctWindDir = "center"
+
+    } else if (target.windDir === "NE" ||
+        target.windDir === "E" ||
+        target.windDir === "SE") {
+        correctWindDir = "right"
+
+    } else if (target.windDir === "NW" ||
+        target.windDir === "W" ||
+        target.windDir === "SW") {
+        correctWindDir = "left"
+    } else {
+        return null;
+    }
+
+    return correctWindDir;
+}
+
+function calculateWindageMils() {
+    let correctWindage = Number(shooterMilWindageEl.textContent);
+    return correctWindage * 5
+}
+
+
+
 function renderHit(target) {
     const hitElevation = calculateHitElevation(target);
     const tgtDistance = target.distance;
@@ -114,7 +144,7 @@ function renderHit(target) {
 function playShotSound() {
     const sound = new Audio("./sniper-rifle-5989.mp3");
     sound.play()
-    sound.volume = 0.2;
+    sound.volume = 0.1;
 }
 
 function peekTarget() {
@@ -144,6 +174,8 @@ fireBtnEl.addEventListener("click", () => {
     const target = peekTarget();
     if (!target) {
         console.log("No more targets");
+        winLoseBtnEl.style.visibility = "visible"
+        winLoseBtnEl.textContent = "You Win!"
         return;
     }
 
@@ -162,13 +194,10 @@ fireBtnEl.addEventListener("click", () => {
             renderTgtInfo(nextTarget);
         } else {
             console.log("All targets completed")
-            winLoseBtnEl.style.visibility = "visible"
-            winLoseBtnEl.textContent = "You Win!"
             ammoRemaining = 0;
             return;
         }
     }
-
 });
 
 
