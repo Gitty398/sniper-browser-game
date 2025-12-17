@@ -20,7 +20,8 @@ let shooterWindageMils;
 // creating the objects for targets
 
 class Target {
-    constructor(distance, windSpeed, windDir, tolerance, delay) {
+    constructor(tgtNumber, distance, windSpeed, windDir, tolerance, delay) {
+        this.tgtNumber = tgtNumber;
         this.distance = distance;
         this.windSpeed = windSpeed;
         this.windDir = windDir;
@@ -30,16 +31,16 @@ class Target {
     }
 };
 
-const targetOne = new Target(100, 5, "E", .12, 500);
-const targetTwo = new Target(150, 10, "W", .12, 500);
-const targetThree = new Target(200, 15, "E", .12, 550);
-const targetFour = new Target(300, 20, "N", .12, 600);
-const targetFive = new Target(350, 10, "W", .12, 650);
-const targetSix = new Target(450, 5, "W", .10, 900);
-const targetSeven = new Target(700, 15, "E", .10, 2000);
-const targetEight = new Target(750, 20, "N", .10, 2100);
-const targetNine = new Target(900, 20, "E", .10, 3000);
-const targetTen = new Target(1000, 10, "W", .10, 4000);
+const targetOne = new Target(1, 100, 5, "E", .12, 500);
+const targetTwo = new Target(2, 150, 10, "W", .12, 500);
+const targetThree = new Target(3, 200, 15, "E", .12, 550);
+const targetFour = new Target(4, 300, 20, "N", .12, 600);
+const targetFive = new Target(5, 350, 10, "W", .12, 650);
+const targetSix = new Target(6, 450, 5, "W", .10, 900);
+const targetSeven = new Target(7, 700, 15, "E", .10, 2000);
+const targetEight = new Target(8, 750, 20, "N", .10, 2100);
+const targetNine = new Target(9, 900, 20, "E", .10, 3000);
+const targetTen = new Target(10, 1000, 10, "W", .10, 4000);
 
 const targetDeck = [
     targetOne, targetTwo, targetThree, targetFour,
@@ -58,7 +59,7 @@ const tgtDistanceEl = document.querySelector("#tgt-distance");
 const tgtWndSpdEl = document.querySelector("#wnd-spd");
 const tgtWndDirEl = document.querySelector("#wnd-dir");
 
-
+const tgtNumberEl = document.querySelector("#tgt-number")
 const shooterElevationEl = document.querySelector("#elevation");
 const shooterDirectionEl = document.querySelector("#direction");
 const shooterMilWindageEl = document.querySelector("#mil-windage");
@@ -300,6 +301,7 @@ function renderTgtInfo(target) {
     tgtDistanceEl.textContent = target.distance
     tgtWndDirEl.textContent = target.windDir
     tgtWndSpdEl.textContent = target.windSpeed
+    tgtNumberEl.textContent = target.tgtNumber
 }
 
 const firstTarget = peekTarget();
