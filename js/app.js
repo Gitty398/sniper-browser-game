@@ -279,6 +279,8 @@ fireBtnEl.addEventListener("click", () => {
 
 function updateDope(currentTarget, isHit, hitElevation) {
     const li = document.createElement("li");
+    dopeContainerEl.innerHTML = ""
+
     li.textContent = isHit
         ? `Hit, ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)} off-center` :
         `Miss by ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)}m`;
