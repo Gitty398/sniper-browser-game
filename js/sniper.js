@@ -131,6 +131,8 @@ function calculateCorrectWindage() {
     } else {
         return null;
     }
+
+    return correctTargetWindage
 }
 
 
@@ -225,6 +227,10 @@ fireBtnEl.addEventListener("click", () => {
     console.log("Shot Fired");
     const target = peekTarget();
 
+    calculateWindageDir()
+    const targetsWND = calculateCorrectWindage();
+    const shooterWND = calculateShooterWindage();
+
     if (ammoRemaining <= 1) {
         console.log("out of Ammo")
         playShotSound();
@@ -252,10 +258,12 @@ fireBtnEl.addEventListener("click", () => {
 
     ammoRemaining--;
     renderAmmo()
-    updateDope(target, isHit, hitElevation)
+    updateDope(target, isHit, hitElevation, shooterWND, targetsWND);
 
     if (isHit) {
         currentTargetIndex++;
+        calculateWindageDir();
+
 
         const nextTarget = peekTarget();
         if (nextTarget) {
@@ -263,7 +271,7 @@ fireBtnEl.addEventListener("click", () => {
         } else {
             console.log("All targets completed")
             // renderScore()
-            updateDope(target, isHit, hitElevation)
+            updateDope(target, isHit, hitElevation, shooterWND, targetsWND);
             ammoRemaining = 0;
             setTimeout(() => {
                 winLoseBtnEl.style.visibility = "visible"
@@ -278,15 +286,79 @@ fireBtnEl.addEventListener("click", () => {
 // functions
 
 
-function updateDope(currentTarget, isHit, hitElevation) {
+function updateDope(currentTarget, isHit, hitElevation, shooterWindageMils, correctTargetWindage) {
+    // console.log({
+    //     currentTarget,
+    //     isHit,
+    //     hitElevation,
+    //     correctTargetWindage,
+    //     calculateShooterWindage,
+    // });
+
     const li = document.createElement("li");
     dopeContainerEl.innerHTML = ""
-
-    li.textContent = isHit
-        ? `Hit, ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)} off-center` :
-        `Miss by ${Math.abs(hitElevation - currentTarget.distance).toFixed(1)}m`;
+    const elText = calcElDope(currentTarget, isHit, hitElevation)
+    const windText = calcWindDope(shooterWindageMils, correctTargetWindage, isHit)
+    li.textContent = `${elText} | ${windText}`;
     dopeContainerEl.appendChild(li);
+};
+
+function calcElDope(currentTarget, isHit, hitElevation) {
+    const elevationDiff = Math.round(hitElevation - currentTarget.distance);
+
+    if (isHit) {
+
+        if (elevationDiff === 0) {
+            return "Hit, dead-center";
+        } else if (elevationDiff > 0) {
+            return `Hit, ${elevationDiff}m high`;
+        } else {
+            return `Hit, ${Math.abs(elevationDiff)}m low`;
+        }
+    } else {
+        return `Miss, ${Math.abs(elevationDiff)}m ${elevationDiff > 0 ? "high" : "low"}`;
+    }
+};
+
+function calcWindDope(shooterWindageMils, correctTargetWindage, isHit) {
+    const windDiff = Math.round(shooterWindageMils - correctTargetWindage)
+    console.log(correctTargetWindage, shooterWindageMils);
+    if (isHit) {
+        if (windDiff === 0) {
+            return "Good wind call";
+        } else if (windDiff > 0) {
+            return `Wind ${windDiff}mils right`
+        } else {
+            return `Wind: ${Math.abs(windDiff)}mils left`;
+        }
+    } else {
+        if (windDiff === 0) {
+            return "Wind: perfect, but missed elevation";
+        } else {
+            return `Wind: off by ${Math.abs(windDiff)}mils ${windDiff > 0 ? "right" : "left"}`;
+        }
+    };
 }
+
+
+
+
+
+
+
+//     // ? `Hit, ${ Math.abs(hitElevation - currentTarget.distance).toFixed(1) } off - center` :
+//     // `Miss by ${ Math.abs(hitElevation - currentTarget.distance).toFixed(1) } m`;
+
+//     ? `Hit, ` {
+//         if (Math.round(hitElevation - currentTarget.distance) >= 0)
+//             li = (`${ (Math.round(hitElevation - currentTarget.distance)} high`)
+//     } 
+
+
+//     off-center` :
+//     `Miss by ${Math.round(hitElevation - currentTarget.distance)}m`;
+// dopeContainerEl.appendChild(li);
+// }
 
 function targetSelector() {
     if (currentTargetIndex >= targetDeck.length) {
