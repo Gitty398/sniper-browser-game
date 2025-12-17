@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Sniper</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="./js/sniper.js"></script>
+</head>
+
+<body>
+
+    <div id="title">
+        <h1>Browser Sniper</h1>
+        <h2>Do you have what it takes?</h2>
+    </div>
+
+    <div id="range-img">
+        <button id="win-lose" disabled></button>
+    </div>
+
+    <div id="tgt-buttons">
+
+        <p>TGT DIST</p>
+        <button id="tgt-distance" disabled></button>
+
+        <p>WND SPD</p>
+        <button id="wnd-spd" disabled></button>
+
+        <p>WND DIR</p>
+        <button id="wnd-dir" disabled></button>
+
+    </div>
+
+    <div id="user-interface">
+
+        <div class="display-tile">
+            <h3 class="card-title">Range Card</h3>
+        </div>
+
+        <div class="display-tile">
+            <h3 class="card-title">Wind Reference for 500m</h3>
+        </div>
+
+        <div class="display-tile">
+            <h3 class="card-title">Shooting Position</h3>
+        </div>
+
+        <div class="display-tile">
+            <h3 class="card-title">Action Buttons</h3>
+        </div>
+
+        <div class="display-tile">
+            <h3 class="card-title">Remaining Ammo</h3>
+        </div>
+
+        <div class="display-tile" id="dope">
+            <h3 class="card-title">DOPE</h3>
+        </div>
+
+        <ul class="reference-card">
+            <li> 100m</li>
+            <li>0 Elevation</li>
+            <li> 400m</li>
+            <li>20 Elevation</li>
+            <li> 700m</li>
+            <li>40 Elevation</li>
+            <li> 1000m</li>
+            <li>60 Elevation</li>
+        </ul>
+
+        <ul class="reference-card">
+            <li> 5 mph</li>
+            <li>.5 mil</li>
+            <li> 10 mph</li>
+            <li>1 mil</li>
+            <li> 15 mph</li>
+            <li>1.5 mils</li>
+            <li> 20 mph</li>
+            <li>2 mils</li>
+        </ul>
+
+        <div class="display-tile">
+            <img id="army-man" src="./ArmyMan.png" alt="green army man as seen from above">
+        </div>
+
+
+        <div class="display-tile" id="shooter-inputs">
+            <p>Elevation</p>
+            <input type="number" id="elevation" value="0">
+            <p>Windage Direction</p>
+            <input type="text" id="direction">
+            <p>Windage (Mils)</p>
+            <input type="number" id="mil-windage" value="0">
+            <p>FIRE!!</p>
+            <button id="fire-btn"></button>
+        </div>
+
+        <div id="ammo-container">
+            <p>You have 15 shots remaining</p>
+        </div>
+
+        <div>
+            <ul class="display-tile" id="dope-container">
+            </ul>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

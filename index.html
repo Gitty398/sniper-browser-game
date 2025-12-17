@@ -4,113 +4,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browser Sniper</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Instructions</title>
     <script defer src="./js/app.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body id="inst">
 
-    <div id="title">
-        <h1>Browser Sniper</h1>
-        <h2>Do you have what it takes?</h2>
-    </div>
-
-    <div id="range-img">
-        <button id="win-lose" disabled></button>
-    </div>
-
-    <div id="tgt-buttons">
-
-        <p>TGT DIST</p>
-        <button id="tgt-distance" disabled></button>
-
-        <p>WND SPD</p>
-        <button id="wnd-spd" disabled></button>
-
-        <p>WND DIR</p>
-        <button id="wnd-dir" disabled></button>
-
-    </div>
-
-    <div id="user-interface">
-
-        <div class="display-tile">
-            <h3 class="card-title">Range Card</h3>
+    <section id="main-section">
+        <div class="inst">
+            <h1>Welcome to Browser Sniper</h1>
         </div>
 
-        <div class="display-tile">
-            <h3 class="card-title">Wind Reference for 500m</h3>
-        </div>
-
-        <div class="display-tile">
-            <h3 class="card-title">Shooting Position</h3>
-        </div>
-
-        <div class="display-tile">
-            <h3 class="card-title">Action Buttons</h3>
-        </div>
-
-        <div class="display-tile">
-            <h3 class="card-title">Remaining Ammo</h3>
-        </div>
-
-        <div class="display-tile" id="dope">
-            <h3 class="card-title">DOPE</h3>
-        </div>
-
-        <ul class="reference-card">
-            <li> 100m</li>
-            <li>0 Elevation</li>
-            <li> 400m</li>
-            <li>20 Elevation</li>
-            <li> 700m</li>
-            <li>40 Elevation</li>
-            <li> 1000m</li>
-            <li>60 Elevation</li>
-        </ul>
-
-        <ul class="reference-card">
-            <li> 5 mph</li>
-            <li>.5 mil</li>
-            <li> 10 mph</li>
-            <li>1 mil</li>
-            <li> 15 mph</li>
-            <li>1.5 mils</li>
-            <li> 20 mph</li>
-            <li>2 mils</li>
-        </ul>
-
-        <div class="display-tile">
-            <img id="army-man" src="./ArmyMan.png" alt="green army man as seen from above">
+        <div class="inst" id="main-inst">
+            <h2 class="inst">Overview:</h2>
+            <p> Browser Sniper is the realistic
+                marksmanship simulator designed for practicing mental math.
+            </p>
         </div>
 
 
-        <div class="display-tile" id="shooter-inputs">
-            <p>Elevation</p>
-            <input type="number" id="elevation" value="0">
-            <p>Windage Direction</p>
-            <input type="text" id="direction">
-            <p>Windage (Mils)</p>
-            <input type="number" id="mil-windage" value="0">
-            <p>FIRE!!</p>
-            <button id="fire-btn"></button>
+        <div class="inst" id="main-inst">
+            <h2 class="inst">How to Play:</h2>
+            <p> To officially become a Browser Sniper, you must hit at least 8 out of
+                10 targets with the 15 rounds provided.
+
+            <div class="inst" id="main-inst">
+
+            </div>
+
+            <p> Users can adjust the elevation (vertical plane) and windage (horizontal plane)
+                of their shot with the "Action Buttons." The horizontal plane has a direction and
+                a value (in mils) to it.
+            </p>
         </div>
 
-        <div id="ammo-container">
-            <p>You have 15 shots remaining</p>
+        <div class="inst" id="main-inst">
+            <p>
+                Like any good sniper would have, you are provided a Range Card and a Wind Reference (at 500m) to assist
+                in making the correct shot calls through the Action Buttons. You are also provided your DOPE (data on
+                previous engagment) to assist in making shot adjustments.
+            </p>
         </div>
 
-        <div>
-            <ul class="display-tile" id="dope-container">
-            </ul>
+        <div class="inst" id="main-inst">
+            <h2 class="inst">Gameplay:</h2>
+            <p>
+                When the game begins, users will be provided the target information through the TGT DIST (target
+                distance),
+                WND SPD (wind speed), and WND DIR (wind direction) displays. Using the reference cards and shooting
+                position picture
+                as a guide, users will input their inputs into the Action Buttons section for their shot and then press
+                the FIRE button when ready.
+            </p>
         </div>
 
-    </div>
+        <div class="inst" id="main-inst">
+            <h2 class="inst">Inputs</h2>
+            <p>
+                The user will only have to input three values before hitting the FIRE button: elevation, windage
+                direction, and windage. <strong>It is very important to note
+                    that elevation and windage (mils) take number inputs while the windage direction will only take
+                    three values: "left", "right", or "center"
+                </strong>
+            </p>
+        </div>
+
+
+        <div class="inst" id="main-inst">
+            <p>Good Luck!</p>
+        </div>
+
+        <div class="inst" id="main-inst">
+            <a href="./sniper.html"> Click this link to begin!</a>
+        </div>
+
+
+        <div class="inst" id="main-inst">
+            <a href="./hints.html"> Click here for hints if you're stuck</a>
+        </div>
 
 
 
-
+    </section>
 </body>
 
 </html>

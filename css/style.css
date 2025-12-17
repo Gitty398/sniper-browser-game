@@ -161,3 +161,33 @@ p {
 #dope-container li {
     flex: 0 0 auto;
 }
+
+#main-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inst {
+    margin: 20px;
+}
+
+#main-inst {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    max-width: 800px;
+}
+
+#main-inst p {
+    font-size: 20px;
+}
+
+#main-inst a {
+    font-size: 20px;
+}
+
+#inst {
+    background-color: rgb(241, 226, 206);
+}
