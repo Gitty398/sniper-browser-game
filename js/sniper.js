@@ -117,8 +117,9 @@ function calculateWindageDir() {
 
 function calculateCorrectWindage() {
     spd = currentTarget.windSpeed
-    console.log(spd)
-    console.log(correctWindDir)
+    // console.log(spd)
+    // console.log(correctWindDir)
+
     if (correctWindDir === "center") {
         correctTargetWindage = spd * 0
 
