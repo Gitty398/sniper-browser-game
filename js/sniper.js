@@ -120,20 +120,50 @@ function calculateCorrectWindage() {
     // console.log(spd)
     // console.log(correctWindDir)
 
-    if (correctWindDir === "center") {
-        correctTargetWindage = spd * 0
+    if (currentTarget.distance < 250) {
 
-    } else if (correctWindDir === "right") {
-        correctTargetWindage = spd * 5
+        if (correctWindDir === "center") {
+            correctTargetWindage = spd * 0
 
-    } else if (correctWindDir === "left") {
-        correctTargetWindage = spd * -5
+        } else if (correctWindDir === "right") {
+            correctTargetWindage = spd * 2.5
 
-    } else {
-        return null;
+        } else if (correctWindDir === "left") {
+            correctTargetWindage = spd * -2.5
+        } else {
+            return null;
+        }
     }
 
-    return correctTargetWindage
+    if (currentTarget.distance >= 250 && currentTarget.distance < 750) {
+        if (correctWindDir === "center") {
+            correctTargetWindage = spd * 0
+
+        } else if (correctWindDir === "right") {
+            correctTargetWindage = spd * 5
+
+        } else if (correctWindDir === "left") {
+            correctTargetWindage = spd * -5
+
+        } else {
+            return null;
+        }
+    }
+
+    if (currentTarget.distance >= 750) {
+        if (correctWindDir === "center") {
+            correctTargetWindage = spd * 0
+
+        } else if (correctWindDir === "right") {
+            correctTargetWindage = spd * 7.5
+
+        } else if (correctWindDir === "left") {
+            correctTargetWindage = spd * -7.5
+
+        } else {
+            return null;
+        }
+    } return correctTargetWindage
 }
 
 
