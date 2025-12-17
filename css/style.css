@@ -257,3 +257,13 @@ a {
     display: inline-block;
     margin: 15px 0px;
 }
+
+@media (max-width: 480px) {
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+}
