@@ -223,7 +223,7 @@ function renderHit(target) {
 
     console.log(isHit ? "Hit" : "Miss")
 
-    const sound = new Audio("./steelcup-47888.mp3")
+    const sound = new Audio("./assets/steelcup-47888.mp3")
     if (target.hit === true) {
         setTimeout(() => {
             sound.play();
@@ -235,7 +235,7 @@ function renderHit(target) {
 
 
 function playShotSound() {
-    const sound = new Audio("./sniper-rifle-5989.mp3");
+    const sound = new Audio("./assets/sniper-rifle-5989.mp3");
     sound.play()
     sound.volume = 0.1;
 }
