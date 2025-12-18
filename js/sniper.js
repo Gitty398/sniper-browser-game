@@ -351,11 +351,11 @@ function calcElDope(currentTarget, isHit, hitElevation) {
             return `Hit, ${Math.abs(elevationDiff)} inches low`;
         }
     } else {
-        return `Miss, ${Math.abs(elevationDiff)}m ${elevationDiff > 0 ? "high" : "low"}`;
+        return `Miss, ${Math.abs(elevationDiff)} inches ${elevationDiff > 0 ? "high" : "low"}`;
     }
 };
 
-function calcWindDope(shooterWindageMils, correctTargetWindage, isHit, correctWindDir, shooterDir) {
+function calcWindDope(shooterWindageMils, correctTargetWindage, isHit, correctWindDir) {
     const windDiff = Math.round(shooterWindageMils - correctTargetWindage)
     console.log(correctTargetWindage, shooterWindageMils);
 
@@ -368,9 +368,9 @@ function calcWindDope(shooterWindageMils, correctTargetWindage, isHit, correctWi
             return `Wind: ${Math.abs(windDiff)}mils left`;
         }
     } else {
-        if (windDiff === 0 && correctWindDir !== shooterDir) {
+        if (windDiff === 0 && correctWindDir !== shooterDirectionEl.value) {
             return "Wind: perfect, but wrong windage direction";
-        } else if (windDiff === 0 && correctWindDir === shooterDir) {
+        } else if (windDiff === 0 && correctWindDir === shooterDirectionEl.value) {
             return "Wind: perfect, but elevation is off";
         } else {
             return `Wind: off by ${Math.abs(windDiff)}mils ${windDiff > 0 ? "right" : "left"}`;
