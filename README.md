@@ -7,6 +7,8 @@ Link to play: [Browser Sniper Game](https://gitty398.github.io/sniper-browser-ga
 
 The marksmanship simulator testing your mental math abilities!
 
+![GUI of Brpwser Sniper](./assets/GUI.png)]
+
 **Description**
 
 * Browser Sniper is a realistic marksmanship simulator that allows players to test thier skills determining *elevation holds* and *wind calls* given a specific target and wind conditions.
