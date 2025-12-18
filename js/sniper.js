@@ -98,9 +98,9 @@ function peekTarget() {                       /* peekTarget sets the current tar
 }
 
 function renderTgtInfo(target) {               /* renders target info for the user */
-    tgtDistanceEl.textContent = target.distance
+    tgtDistanceEl.textContent = `${target.distance} meters`
     tgtWndDirEl.textContent = target.windDir
-    tgtWndSpdEl.textContent = target.windSpeed
+    tgtWndSpdEl.textContent = `${target.windSpeed} mph`
     tgtNumberEl.textContent = target.tgtNumber
 }
 
