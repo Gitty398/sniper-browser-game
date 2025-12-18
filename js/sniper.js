@@ -341,12 +341,14 @@ fireBtnEl.addEventListener("click", () => {
 
 // -------------------------------------DOPE functions--------------------------------------------------
 
+
+
 function updateDope(currentTarget, isHit, hitElevation, shooterWindageMils, correctTargetWindage) {
 
     const li = document.createElement("li");
     dopeContainerEl.innerHTML = ""
     const elText = calcElDope(currentTarget, isHit, hitElevation)
-    const windText = calcWindDope(shooterWindageMils, correctTargetWindage, isHit)
+    const windText = calcWindDope(shooterWindageMils, correctTargetWindage, isHit, correctWindDir, shooterDir)
     li.textContent = `${elText} | ${windText}`;
     dopeContainerEl.appendChild(li);
 };
@@ -355,7 +357,6 @@ function calcElDope(currentTarget, isHit, hitElevation) {
     const elevationDiff = Math.round(hitElevation - currentTarget.distance);
 
     if (isHit) {
-
         if (elevationDiff === 0) {
             return "Hit, dead-center";
         } else if (elevationDiff > 0) {
@@ -368,9 +369,10 @@ function calcElDope(currentTarget, isHit, hitElevation) {
     }
 };
 
-function calcWindDope(shooterWindageMils, correctTargetWindage, isHit) {
+function calcWindDope(shooterWindageMils, correctTargetWindage, isHit, correctWindDir, shooterDir) {
     const windDiff = Math.round(shooterWindageMils - correctTargetWindage)
     console.log(correctTargetWindage, shooterWindageMils);
+
     if (isHit) {
         if (windDiff === 0) {
             return "Good wind call";
@@ -380,8 +382,10 @@ function calcWindDope(shooterWindageMils, correctTargetWindage, isHit) {
             return `Wind: ${Math.abs(windDiff)}mils left`;
         }
     } else {
-        if (windDiff === 0) {
-            return "Wind: perfect, but missed elevation";
+        if (windDiff === 0 && correctWindDir !== shooterDir) {
+            return "Wind: perfect, but wrong windage direction";
+        } else if (windDiff === 0 && correctWindDir === shooterDir) {
+            return "Wind: perfect, but elevation is off";
         } else {
             return `Wind: off by ${Math.abs(windDiff)}mils ${windDiff > 0 ? "right" : "left"}`;
         }
