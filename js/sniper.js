@@ -23,7 +23,6 @@ class Target {
         this.windSpeed = windSpeed;
         this.windDir = windDir;
         this.tolerance = tolerance;
-        // this.hit = false;
         this.delay = delay;
     }
 };
@@ -81,8 +80,6 @@ function playHitSound() {
     }, currentTarget.delay);
 }
 
-
-
 function renderAmmo() {
     ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
     fireBtnEl.disabled = ammoRemaining === 0;
@@ -106,17 +103,6 @@ function renderTgtInfo(target) {               /* renders target info for the us
     tgtWndSpdEl.textContent = target.windSpeed
     tgtNumberEl.textContent = target.tgtNumber
 }
-
-// function targetSelector() {
-//     currentTarget = targetDeck[currentTargetIndex++];
-
-//     if (currentTargetIndex >= targetDeck.length) {
-//         currentTarget = null;
-//         return null;
-//     }
-
-//     return currentTarget;
-// }
 
 // ------------------------------------Elevation functions---------------------------------------------------------------
 
