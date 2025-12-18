@@ -1,23 +1,20 @@
 
-// declaring global variables
+//-------------------------declaring global variables--------------------------------------
 
 let ammoRemaining = 15
 let targetsRemaining;
-
 
 let currentTarget = null;
 let currentTargetIndex = 0
 
 let spd;
 let correctTargetWindage;
-
 let correctWindDir;
-
 let shooterWindageMils;
+let shooterDir;
 
 
-
-// creating the objects for targets
+//-----------------------creating the objects for targets-----------------------------------------
 
 class Target {
     constructor(tgtNumber, distance, windSpeed, windDir, tolerance, delay) {
@@ -48,18 +45,15 @@ const targetDeck = [
     targetNine, targetTen
 ];
 
-
-// console.log(targetOne)
-
-// caching browser elements
+// ----------------------------------------caching browser elements--------------------------------
 
 const winLoseBtnEl = document.querySelector("#win-lose");
 
 const tgtDistanceEl = document.querySelector("#tgt-distance");
 const tgtWndSpdEl = document.querySelector("#wnd-spd");
 const tgtWndDirEl = document.querySelector("#wnd-dir");
-
 const tgtNumberEl = document.querySelector("#tgt-number")
+
 const shooterElevationEl = document.querySelector("#elevation");
 const shooterDirectionEl = document.querySelector("#direction");
 const shooterMilWindageEl = document.querySelector("#mil-windage");
@@ -70,7 +64,61 @@ const ammoContainerEl = document.querySelector("#ammo-container")
 const dopeContainerEl = document.querySelector("#dope-container")
 
 
+// ---------------------------------------- Misc functions--------------------------------------------------------
 
+
+function playShotSound() {
+    const sound = new Audio("./assets/sniper-rifle-5989.mp3");
+    sound.play()
+    sound.volume = 0.1;
+}
+
+function playHitSound() {
+    const sound = new Audio("./assets/steelcup-47888.mp3")
+    setTimeout(() => {
+        sound.play();
+        sound.volume = 0.2
+    }, currentTarget.delay);
+}
+
+
+
+function renderAmmo() {
+    ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
+    fireBtnEl.disabled = ammoRemaining === 0;
+}
+
+
+// ----------------------------------------Targeting section-------------------------------------------------
+
+const firstTarget = peekTarget();          /* renders the first target on the GUI */
+if (firstTarget) renderTgtInfo(firstTarget);
+
+
+function peekTarget() {                       /* peekTarget sets the current target as the current target index */
+    currentTarget = targetDeck[currentTargetIndex]
+    return targetDeck[currentTargetIndex] ?? null;
+}
+
+function renderTgtInfo(target) {               /* renders target info for the user */
+    tgtDistanceEl.textContent = target.distance
+    tgtWndDirEl.textContent = target.windDir
+    tgtWndSpdEl.textContent = target.windSpeed
+    tgtNumberEl.textContent = target.tgtNumber
+}
+
+// function targetSelector() {
+//     currentTarget = targetDeck[currentTargetIndex++];
+
+//     if (currentTargetIndex >= targetDeck.length) {
+//         currentTarget = null;
+//         return null;
+//     }
+
+//     return currentTarget;
+// }
+
+// ------------------------------------Elevation functions---------------------------------------------------------------
 
 function calculateHitElevation(target) {
     const tgtDistance = target.distance;
@@ -90,10 +138,13 @@ function calculateHitElevation(target) {
 
     console.log(shooterElevation)
     return shooterElevation
-
 };
 
-function calculateWindageDir() {
+
+// ----------------------------------Wind functions--------------------------------------------------------------------------
+
+
+function calculateWindageDir() {          /* links the raw wind directions to the correct wind direction calls from the user */
 
     if (currentTarget.windDir === "S" ||
         currentTarget.windDir === "N") {
@@ -115,10 +166,9 @@ function calculateWindageDir() {
 }
 
 
-function calculateCorrectWindage() {
+function calculateCorrectWindage() {   /* creates 3 wind brackets (<250, 250-749, >750) and assigns multipliers to each direction in the bracket for
+                                        the correct wind call */
     spd = currentTarget.windSpeed
-    // console.log(spd)
-    // console.log(correctWindDir)
 
     if (currentTarget.distance < 250) {
 
@@ -167,7 +217,7 @@ function calculateCorrectWindage() {
 }
 
 
-function calculateShooterWindage() {
+function calculateShooterWindage() {         /* calculates the math from the shooter's windage input for use in comparing to the correct call*/
     shooterWindageMils = Number(shooterMilWindageEl.value);
 
     if (correctWindDir === "center") {
@@ -184,14 +234,15 @@ function calculateShooterWindage() {
     }
 }
 
-function checkWindage() {
+
+function checkWindage() {           /* compares the correct wind direction and windage to the shooter's inputs*/
+    let shooterDir = (shooterDirectionEl.value)
+
     calculateWindageDir();
     calculateCorrectWindage();
     calculateShooterWindage();
-    console.log(correctTargetWindage);
-    console.log(calculateShooterWindage());
 
-    if (correctTargetWindage === calculateShooterWindage()) {
+    if (correctTargetWindage === calculateShooterWindage() && correctWindDir === shooterDir) {
         return true;
     } else {
         return false;
@@ -199,18 +250,16 @@ function checkWindage() {
 };
 
 
-// function checkCorrectWindage(correctWindageDir, shooterWindage) {
-//     let correctTotalWindage = target.correctWindDir
-// }
+// -----------------------------------------Render hit function-----------------------------------------
 
 
 
 function renderHit(target) {
     const hitElevation = calculateHitElevation(target);
     const tgtDistance = target.distance;
-    const windage = checkWindage(correctTargetWindage, shooterWindageMils)
-    console.log(windage)
+    const windage = checkWindage(correctTargetWindage, shooterWindageMils, shooterDir)
 
+    console.log(windage)
     console.log(hitElevation)
 
     const tolerance = tgtDistance * target.tolerance;
@@ -219,38 +268,16 @@ function renderHit(target) {
         hitElevation <= tgtDistance + tolerance && windage;
 
     target.hit = isHit;
-    target.shotAt = true;
 
     console.log(isHit ? "Hit" : "Miss")
 
-    const sound = new Audio("./assets/steelcup-47888.mp3")
     if (target.hit === true) {
-        setTimeout(() => {
-            sound.play();
-            sound.volume = 0.2
-        }, target.delay);
+        playHitSound()
+        return isHit;
     }
-    return isHit;
 }
 
-
-function playShotSound() {
-    const sound = new Audio("./assets/sniper-rifle-5989.mp3");
-    sound.play()
-    sound.volume = 0.1;
-}
-
-function peekTarget() {
-    currentTarget = targetDeck[currentTargetIndex]
-    return targetDeck[currentTargetIndex] ?? null;
-}
-
-function renderAmmo() {
-    ammoContainerEl.textContent = `You have ${ammoRemaining} shots remaining`
-    fireBtnEl.disabled = ammoRemaining === 0;
-}
-
-// -------------------------------event listeners----------------------------------------------------
+// -------------------------------Fire button click event----------------------------------------------------
 
 
 
@@ -262,12 +289,12 @@ fireBtnEl.addEventListener("click", () => {
     const targetsWND = calculateCorrectWindage();
     const shooterWND = calculateShooterWindage();
 
-    if (ammoRemaining <= 1) {
+    if (ammoRemaining <= 1) {         /* path when shooter s on their last shot */
         console.log("out of Ammo")
         playShotSound();
         ammoRemaining--;
         renderAmmo()
-        setTimeout(() => {
+        setTimeout(() => {           /* renders the score 500 miliseconds after last target delay */
             renderScore();
         }, (target.delay + 500));
 
@@ -277,7 +304,7 @@ fireBtnEl.addEventListener("click", () => {
     playShotSound()
 
 
-    if (!target) {
+    if (!target) {                          /* if no more targets, shooter made it to the end and is a winner */
         console.log("No more targets");
         winLoseBtnEl.style.visibility = "visible"
         winLoseBtnEl.textContent = "You Win!"
@@ -292,16 +319,14 @@ fireBtnEl.addEventListener("click", () => {
     updateDope(target, isHit, hitElevation, shooterWND, targetsWND);
 
     if (isHit) {
-        currentTargetIndex++;
-        calculateWindageDir();
 
-
+        currentTargetIndex++;               /* moves to the next target if there is a hit */
         const nextTarget = peekTarget();
         if (nextTarget) {
             renderTgtInfo(nextTarget);
-        } else {
+
+        } else {                   /* if a hit and no more targets, shooter made it to the end and is a winner */
             console.log("All targets completed")
-            // renderScore()
             updateDope(target, isHit, hitElevation, shooterWND, targetsWND);
             ammoRemaining = 0;
             setTimeout(() => {
@@ -314,17 +339,9 @@ fireBtnEl.addEventListener("click", () => {
 });
 
 
-// functions
-
+// -------------------------------------DOPE functions--------------------------------------------------
 
 function updateDope(currentTarget, isHit, hitElevation, shooterWindageMils, correctTargetWindage) {
-    // console.log({
-    //     currentTarget,
-    //     isHit,
-    //     hitElevation,
-    //     correctTargetWindage,
-    //     calculateShooterWindage,
-    // });
 
     const li = document.createElement("li");
     dopeContainerEl.innerHTML = ""
@@ -371,44 +388,7 @@ function calcWindDope(shooterWindageMils, correctTargetWindage, isHit) {
     };
 }
 
-
-
-
-
-
-
-//     // ? `Hit, ${ Math.abs(hitElevation - currentTarget.distance).toFixed(1) } off - center` :
-//     // `Miss by ${ Math.abs(hitElevation - currentTarget.distance).toFixed(1) } m`;
-
-//     ? `Hit, ` {
-//         if (Math.round(hitElevation - currentTarget.distance) >= 0)
-//             li = (`${ (Math.round(hitElevation - currentTarget.distance)} high`)
-//     } 
-
-
-//     off-center` :
-//     `Miss by ${Math.round(hitElevation - currentTarget.distance)}m`;
-// dopeContainerEl.appendChild(li);
-// }
-
-function targetSelector() {
-    if (currentTargetIndex >= targetDeck.length) {
-        currentTarget = null;
-        return null;
-    }
-    currentTarget = targetDeck[currentTargetIndex++];
-    return currentTarget;
-}
-
-function renderTgtInfo(target) {
-    tgtDistanceEl.textContent = target.distance
-    tgtWndDirEl.textContent = target.windDir
-    tgtWndSpdEl.textContent = target.windSpeed
-    tgtNumberEl.textContent = target.tgtNumber
-}
-
-const firstTarget = peekTarget();
-if (firstTarget) renderTgtInfo(firstTarget);
+// --------------------------------Render score function--------------------------------------------
 
 
 function renderScore() {
