@@ -346,9 +346,9 @@ function calcElDope(currentTarget, isHit, hitElevation) {
         if (elevationDiff === 0) {
             return "Hit, dead-center";
         } else if (elevationDiff > 0) {
-            return `Hit, ${elevationDiff}m high`;
+            return `Hit, ${elevationDiff} inches high`;
         } else {
-            return `Hit, ${Math.abs(elevationDiff)}m low`;
+            return `Hit, ${Math.abs(elevationDiff)} inches low`;
         }
     } else {
         return `Miss, ${Math.abs(elevationDiff)}m ${elevationDiff > 0 ? "high" : "low"}`;
