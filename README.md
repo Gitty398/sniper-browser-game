@@ -7,7 +7,7 @@ Link to play: [Browser Sniper Game](https://gitty398.github.io/sniper-browser-ga
 
 The marksmanship simulator testing your mental math abilities!
 
-![GUI of Brpwser Sniper](./assets/GUI.png)]
+![GUI of Brpwser Sniper](./assets/GUI.png)
 
 **Description**
 
